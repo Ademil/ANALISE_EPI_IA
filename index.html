@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AP-Sistema Inteligente de Análise SST com IA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            padding: 35px;
+            overflow: hidden;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #2c3e50;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: -35px;
+            margin-left: -35px;
+            margin-right: -35px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .ai-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-left: 10px;
+            font-weight: bold;
+        }
+        
+        .app-description {
+            background-color: #e8f4fc;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 35px;
+            border-left: 5px solid #3498db;
+            font-size: 1.05rem;
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 35px;
+        }
+        
+        @media (max-width: 1200px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .form-section {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e1e1e1;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #3498db;
+            font-size: 1.5rem;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin: 20px 0 15px 0;
+            font-size: 1.2rem;
+        }
+        
+        /* Seção de Upload e Análise por IA */
+        .ai-analysis-section {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8fbff;
+            border-radius: 10px;
+            border: 2px dashed #667eea;
+        }
+        
+        .upload-area {
+            text-align: center;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            background-color: white;
+        }
+        
+        .upload-area:hover {
+            background-color: #e8f4fc;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .upload-subtext {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .photo-canvas-container {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+        }
+        
+        #photoCanvas {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .canvas-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .canvas-btn {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .canvas-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .ai-analysis-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px auto;
+            transition: all 0.3s;
+        }
+        
+        .ai-analysis-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .ai-analysis-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .ai-analysis-results {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #f0f7ff;
+            border-radius: 10px;
+            border: 1px solid #cce5ff;
+            display: none;
+        }
+        
+        .detection-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .detection-number {
+            background-color: #e74c3c;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .detection-details {
+            flex-grow: 1;
+        }
+        
+        .detection-action {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .history-section {
+            margin-top: 30px;
+        }
+        
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+        
+        .history-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-date {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .history-percent {
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .percent-high {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .percent-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .percent-low {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Botões de Exportação */
+        .export-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .export-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .export-pdf {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        .export-pdf:hover {
+            background: linear-gradient(to right, #c0392b, #a93226);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .export-print {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+        }
+        
+        .export-print:hover {
+            background: linear-gradient(to right, #2980b9, #1c6ea4);
+            transform: translateY(-3px);
+        }
+        
+        .export-history {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        .export-history:hover {
+            background: linear-gradient(to right, #27ae60, #219653);
+            transform: translateY(-3px);
+        }
+        
+        /* Tabs de Resultados */
+        .tab-container {
+            margin-top: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #555;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: #3498db;
+            border-bottom: 3px solid #3498db;
+            background-color: #f8fbff;
+        }
+        
+        .tab-content {
+            padding: 25px;
+            background-color: #f8fbff;
+            border-radius: 0 0 10px 10px;
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Outros estilos */
+        .status-conforme {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        
+        .status-nao-conforme {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        .status-nao-aplicavel {
+            color: #7f8c8d;
+            font-weight: bold;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .risk-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .risk-low {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .risk-medium {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .risk-high {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            header {
+                padding: 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+            }
+            
+            .export-buttons {
+                flex-direction: column;
+            }
+            
+            .export-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Incluindo jsPDF e outras bibliotecas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-robot"></i> APavan - Sistema Inteligente de Análise SST
+                <span class="ai-badge">IA INTEGRADA</span>
+            </h1>
+            <p class="subtitle">Análise automática de fotos com IA + Geração de laudos + Histórico inteligente</p>
+            <p style="margin-top: 10px; font-size: 1rem;">
+                <i class="fas fa-camera"></i> Análise por IA | 
+                <i class="fas fa-file-pdf"></i> PDF Automático | 
+                <i class="fas fa-history"></i> Histórico Inteligente
+            </p>
+        </header>
+        
+        <div class="app-description">
+            <p><strong>SISTEMA COM INTELIGÊNCIA ARTIFICIAL:</strong> Tire uma foto do ambiente de trabalho e nossa IA irá analisar automaticamente os EPIs faltantes, marcar na imagem e gerar o relatório completo.</p>
+            <p style="margin-top: 10px;"><i class="fas fa-bolt" style="color: #f39c12;"></i> <strong>RECURSOS AVANÇADOS:</strong> Detecção por IA + Anotações na imagem + Histórico com gráficos + Laudo PDF profissional</p>
+        </div>
+        
+        <div class="grid-container">
+            <!-- COLUNA 1: Upload e Análise por IA -->
+            <div class="form-section">
+                <h2><i class="fas fa-camera"></i> 1. ANÁLISE POR INTELIGÊNCIA ARTIFICIAL</h2>
+                <p>Faça upload de uma foto do ambiente de trabalho para análise automática:</p>
+                
+                <div class="ai-analysis-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">
+                            Clique ou arraste uma foto do ambiente
+                        </div>
+                        <div class="upload-subtext">
+                            A IA irá identificar EPIs faltantes e marcar na imagem
+                        </div>
+                        <input type="file" id="photoUpload" accept="image/*" style="display: none;">
+                    </div>
+                    
+                    <div class="photo-canvas-container" id="canvasContainer">
+                        <div class="canvas-wrapper">
+                            <canvas id="photoCanvas"></canvas>
+                        </div>
+                        <div class="canvas-controls">
+                            <button class="canvas-btn" id="resetCanvas">Redefinir Imagem</button>
+                            <button class="canvas-btn" id="zoomIn">+ Zoom</button>
+                            <button class="canvas-btn" id="zoomOut">- Zoom</button>
+                        </div>
+                    </div>
+                    
+                    <button id="analyzeBtn" class="ai-analysis-btn">
+                        <i class="fas fa-robot"></i> ANALISAR FOTO COM IA
+                        <div class="loading" id="loadingIndicator" style="display: none;"></div>
+                    </button>
+                    
+                    <div class="ai-analysis-results" id="aiResults">
+                        <h3><i class="fas fa-search"></i> DETECÇÕES DA IA</h3>
+                        <p>Itens identificados como faltantes ou não conformes:</p>
+                        <div id="detectionsList"></div>
+                    </div>
+                </div>
+                
+                <div class="history-section">
+                    <h2><i class="fas fa-history"></i> HISTÓRICO DE ANÁLISES</h2>
+                    <p>Últimas análises realizadas:</p>
+                    <div class="history-list" id="historyList">
+                        <!-- Histórico será carregado aqui -->
+                    </div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <button id="clearHistory" class="canvas-btn" style="background-color: #95a5a6;">
+                            <i class="fas fa-trash"></i> Limpar Histórico
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- COLUNA 2: Resultados e Exportação -->
+            <div class="form-section">
+                <h2><i class="fas fa-chart-bar"></i> 2. RESULTADOS E RELATÓRIOS</h2>
+                
+                <div class="tab-container">
+                    <div class="tabs">
+                        <div class="tab active" onclick="openTab('tab-summary')">Resumo</div>
+                        <div class="tab" onclick="openTab('tab-details')">Detalhes</div>
+                        <div class="tab" onclick="openTab('tab-chart')">Gráficos</div>
+                        <div class="tab" onclick="openTab('tab-report')">Relatório IA</div>
+                    </div>
+                    
+                    <div id="tab-summary" class="tab-content active">
+                        <h3><i class="fas fa-file-medical-alt"></i> RESUMO DA ANÁLISE</h3>
+                        <div id="summaryContent">
+                            <p style="color: #7f8c8d; font-style: italic;">
+                                Faça upload de uma foto e clique em "ANALISAR FOTO COM IA" para ver os resultados.
+                            </p>
+                        </div>
+                        
+                        <div id="conformityDisplay" style="display: none;">
+                            <div style="background: linear-gradient(135deg, #f8fbff 0%, #e1f0ff 100%); padding: 20px; border-radius: 10px; margin: 20px 0; text-align: center;">
+                                <div style="font-size: 2.5rem; font-weight: bold; color: #2c3e50;" id="percentValue">0%</div>
+                                <div style="font-size: 1.2rem; color: #2c3e50; margin-top: 10px;">Conformidade Total</div>
+                                <div id="riskIndicator" class="risk-indicator risk-low" style="margin-top: 10px;">BAIXO RISCO</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-details" class="tab-content">
+                        <h3><i class="fas fa-list"></i> DETALHES DA ANÁLISE</h3>
+                        <div id="detailsContent">
+                            <p style="color: #7f8c8d; font-style: italic;">
+                                Os detalhes da análise aparecerão aqui após processamento.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-chart" class="tab-content">
+                        <h3><i class="fas fa-chart-pie"></i> ANÁLISE ESTATÍSTICA</h3>
+                        <div style="height: 300px; position: relative;">
+                            <canvas id="conformityChart"></canvas>
+                        </div>
+                        <div id="chartLegend" style="margin-top: 20px;"></div>
+                    </div>
+                    
+                    <div id="tab-report" class="tab-content">
+                        <h3><i class="fas fa-robot"></i> RELATÓRIO DA INTELIGÊNCIA ARTIFICIAL</h3>
+                        <div id="aiReportContent">
+                            <p style="color: #7f8c8d; font-style: italic;">
+                                O relatório detalhado da análise por IA será gerado aqui.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="export-buttons">
+                    <button id="exportPdfBtn" class="export-btn export-pdf">
+                        <i class="fas fa-file-pdf"></i> GERAR PDF COMPLETO
+                    </button>
+                    <button id="exportPrintBtn" class="export-btn export-print">
+                        <i class="fas fa-print"></i> IMPRIMIR RELATÓRIO
+                    </button>
+                    <button id="exportHistoryBtn" class="export-btn export-history">
+                        <i class="fas fa-download"></i> EXPORTAR HISTÓRICO
+                    </button>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 15px; background-color: #fff8e1; border-radius: 8px; border-left: 4px solid #f1c40f;">
+                    <h4><i class="fas fa-lightbulb"></i> RECOMENDAÇÕES DA IA:</h4>
+                    <div id="aiRecommendations">
+                        <p>Após a análise, recomendações específicas serão exibidas aqui.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 40px; padding-top: 25px; border-top: 1px solid #eee; color: #666;">
+            <p><strong>SISTEMA INTELIGENTE DE ANÁLISE SST COM IA</strong> | Desenvolvido para Engenharia de Segurança do Trabalho</p>
+            <p>© 2023 - Tecnologia de Inteligência Artificial aplicada à segurança do trabalho</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">
+                <i class="fas fa-exclamation-circle"></i> Este sistema utiliza IA para análise, mas não substitui a avaliação profissional.
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Configurações globais
+        const { jsPDF } = window.jspdf;
+        let currentAnalysis = null;
+        let analysisHistory = JSON.parse(localStorage.getItem('sst_analysis_history')) || [];
+        let canvas = document.getElementById('photoCanvas');
+        let ctx = canvas.getContext('2d');
+        let currentImage = null;
+        let scale = 1;
+        let detections = [];
+        
+        // Inicializar gráfico
+        const chartCanvas = document.getElementById('conformityChart');
+        let conformityChart = null;
+        
+        // Configurar upload de foto
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('photoUpload').click();
+        });
+        
+        document.getElementById('photoUpload').addEventListener('change', handleImageUpload);
+        
+        // Função para carregar imagem no canvas
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    // Configurar canvas
+                    canvas.width = Math.min(img.width, 800);
+                    canvas.height = (canvas.width / img.width) * img.height;
+                    
+                    // Desenhar imagem
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    currentImage = img;
+                    scale = 1;
+                    
+                    // Mostrar canvas
+                    document.getElementById('canvasContainer').style.display = 'block';
+                    
+                    // Habilitar botão de análise
+                    document.getElementById('analyzeBtn').disabled = false;
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Controles do canvas
+        document.getElementById('zoomIn').addEventListener('click', () => {
+            scale *= 1.2;
+            redrawCanvas();
+        });
+        
+        document.getElementById('zoomOut').addEventListener('click', () => {
+            scale = Math.max(0.5, scale / 1.2);
+            redrawCanvas();
+        });
+        
+        document.getElementById('resetCanvas').addEventListener('click', () => {
+            scale = 1;
+            redrawCanvas();
+        });
+        
+        function redrawCanvas() {
+            if (!currentImage) return;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2);
+            ctx.scale(scale, scale);
+            ctx.translate(-canvas.width/2, -canvas.height/2);
+            ctx.drawImage(currentImage, 0, 0, canvas.width, canvas.height);
+            
+            // Redesenhar detecções se existirem
+            drawDetections();
+            ctx.restore();
+        }
+        
+        // Função para desenhar detecções no canvas
+        function drawDetections() {
+            detections.forEach((detection, index) => {
+                // Desenhar círculo vermelho
+                ctx.beginPath();
+                ctx.arc(detection.x, detection.y, 20, 0, Math.PI * 2);
+                ctx.strokeStyle = '#e74c3c';
+                ctx.lineWidth = 3;
+                ctx.stroke();
+                
+                // Desenhar número
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText((index + 1).toString(), detection.x, detection.y);
+                
+                // Desenhar etiqueta
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText(detection.item, detection.x + 25, detection.y - 10);
+            });
+        }
+        
+        // Análise por IA (simulada)
+        document.getElementById('analyzeBtn').addEventListener('click', analyzeWithAI);
+        
+        function analyzeWithAI() {
+            if (!currentImage) {
+                alert('Por favor, faça upload de uma foto primeiro.');
+                return;
+            }
+            
+            // Mostrar indicador de carregamento
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            analyzeBtn.disabled = true;
+            loadingIndicator.style.display = 'inline-block';
+            
+            // Simular processamento da IA
+            setTimeout(() => {
+                // Gerar detecções aleatórias (simulação)
+                generateSimulatedDetections();
+                
+                // Processar resultados
+                processAnalysisResults();
+                
+                // Atualizar interface
+                updateUIWithResults();
+                
+                // Salvar no histórico
+                saveToHistory();
+                
+                // Esconder indicador de carregamento
+                analyzeBtn.disabled = false;
+                loadingIndicator.style.display = 'none';
+                
+                // Mostrar resultados da IA
+                document.getElementById('aiResults').style.display = 'block';
+            }, 2000);
+        }
+        
+        function generateSimulatedDetections() {
+            detections = [];
+            
+            // Itens que a IA pode detectar
+            const possibleItems = [
+                { name: 'Capacete de Segurança', type: 'capacete' },
+                { name: 'Óculos de Proteção', type: 'oculos' },
+                { name: 'Luvas de Segurança', type: 'luvas' },
+                { name: 'Botas de Segurança', type: 'botas' },
+                { name: 'Cinto de Segurança', type: 'cinto' },
+                { name: 'Protetor Auricular', type: 'auditivo' },
+                { name: 'Máscara de Proteção', type: 'respiratoria' },
+                { name: 'Vestimenta de Trabalho', type: 'vestimenta' }
+            ];
+            
+            // Gerar 3-5 detecções aleatórias
+            const numDetections = Math.floor(Math.random() * 3) + 2;
+            const usedTypes = new Set();
+            
+            for (let i = 0; i < numDetections; i++) {
+                let item;
+                do {
+                    item = possibleItems[Math.floor(Math.random() * possibleItems.length)];
+                } while (usedTypes.has(item.type) && usedTypes.size < possibleItems.length);
+                
+                usedTypes.add(item.type);
+                
+                // Posição aleatória no canvas
+                const x = Math.random() * (canvas.width - 100) + 50;
+                const y = Math.random() * (canvas.height - 100) + 50;
+                
+                detections.push({
+                    item: item.name,
+                    type: item.type,
+                    x: x,
+                    y: y,
+                    confidence: (Math.random() * 30 + 70).toFixed(1) + '%',
+                    status: 'ausente',
+                    recommendation: getRecommendationForItem(item.type)
+                });
+            }
+            
+            // Desenhar detecções no canvas
+            drawDetections();
+        }
+        
+        function getRecommendationForItem(type) {
+            const recommendations = {
+                'capacete': 'Fornecer capacete de segurança com certificado de aprovação (CA)',
+                'oculos': 'Fornecer óculos de proteção adequado ao risco',
+                'luvas': 'Fornecer luvas específicas para a atividade',
+                'botas': 'Fornecer botas de segurança com biqueira de aço',
+                'cinto': 'Implementar sistema completo de proteção contra quedas',
+                'auditivo': 'Fornecer protetor auricular em área de ruído',
+                'respiratoria': 'Fornecer máscara de proteção respiratória',
+                'vestimenta': 'Fornecer vestimenta adequada ao risco'
+            };
+            return recommendations[type] || 'Fornecer equipamento de proteção adequado';
+        }
+        
+        function processAnalysisResults() {
+            const totalEPIs = 8; // Total de EPIs que verificamos
+            const missingEPIs = detections.length;
+            const presentEPIs = totalEPIs - missingEPIs;
+            const conformityPercent = Math.round((presentEPIs / totalEPIs) * 100);
+            
+            // Determinar nível de risco
+            let riskLevel = 'BAIXO';
+            let riskClass = 'risk-low';
+            
+            if (conformityPercent < 50) {
+                riskLevel = 'ALTO';
+                riskClass = 'risk-high';
+            } else if (conformityPercent < 75) {
+                riskLevel = 'MODERADO';
+                riskClass = 'risk-medium';
+            }
+            
+            // Criar objeto de análise
+            currentAnalysis = {
+                id: Date.now(),
+                date: new Date().toLocaleString('pt-BR'),
+                image: canvas.toDataURL('image/jpeg', 0.7),
+                detections: [...detections],
+                statistics: {
+                    totalEPIs: totalEPIs,
+                    presentEPIs: presentEPIs,
+                    missingEPIs: missingEPIs,
+                    conformityPercent: conformityPercent,
+                    riskLevel: riskLevel,
+                    riskClass: riskClass
+                },
+                recommendations: detections.map(d => d.recommendation)
+            };
+        }
+        
+        function updateUIWithResults() {
+            // Atualizar lista de detecções
+            const detectionsList = document.getElementById('detectionsList');
+            detectionsList.innerHTML = '';
+            
+            detections.forEach((detection, index) => {
+                const div = document.createElement('div');
+                div.className = 'detection-item';
+                div.innerHTML = `
+                    <div class="detection-number">${index + 1}</div>
+                    <div class="detection-details">
+                        <strong>${detection.item}</strong>
+                        <div class="detection-action">${detection.recommendation}</div>
+                    </div>
+                    <div style="color: #666; font-size: 0.9rem;">
+                        ${detection.confidence} confiança
+                    </div>
+                `;
+                detectionsList.appendChild(div);
+            });
+            
+            // Atualizar resumo
+            const summaryContent = document.getElementById('summaryContent');
+            const conformityDisplay = document.getElementById('conformityDisplay');
+            const percentValue = document.getElementById('percentValue');
+            const riskIndicator = document.getElementById('riskIndicator');
+            
+            summaryContent.innerHTML = `
+                <p><strong>Análise realizada em:</strong> ${new Date().toLocaleString('pt-BR')}</p>
+                <p><strong>Total de itens verificados:</strong> ${currentAnalysis.statistics.totalEPIs}</p>
+                <p><strong>Itens em conformidade:</strong> ${currentAnalysis.statistics.presentEPIs}</p>
+                <p><strong>Não conformidades identificadas:</strong> ${currentAnalysis.statistics.missingEPIs}</p>
+            `;
+            
+            conformityDisplay.style.display = 'block';
+            percentValue.textContent = `${currentAnalysis.statistics.conformityPercent}%`;
+            percentValue.style.color = currentAnalysis.statistics.conformityPercent >= 75 ? '#27ae60' : 
+                                      currentAnalysis.statistics.conformityPercent >= 50 ? '#f39c12' : '#e74c3c';
+            
+            riskIndicator.textContent = currentAnalysis.statistics.riskLevel + ' RISCO';
+            riskIndicator.className = `risk-indicator ${currentAnalysis.statistics.riskClass}`;
+            
+            // Atualizar detalhes
+            updateDetailsTab();
+            
+            // Atualizar gráfico
+            updateChart();
+            
+            // Atualizar relatório IA
+            updateAIReport();
+            
+            // Atualizar recomendações
+            updateRecommendations();
+        }
+        
+        function updateDetailsTab() {
+            const detailsContent = document.getElementById('detailsContent');
+            let html = '<h4>ITENS IDENTIFICADOS PELA IA:</h4>';
+            
+            currentAnalysis.detections.forEach((detection, index) => {
+                html += `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="background: #e74c3c; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px;">
+                                ${index + 1}
+                            </div>
+                            <strong style="flex-grow: 1;">${detection.item}</strong>
+                            <span style="color: #666; font-size: 0.9rem;">${detection.confidence} confiança</span>
+                        </div>
+                        <div style="color: #666; font-size: 0.9rem; margin-left: 35px;">
+                            <strong>Status:</strong> <span class="status-nao-conforme">NÃO CONFORME</span><br>
+                            <strong>Recomendação:</strong> ${detection.recommendation}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            detailsContent.innerHTML = html;
+        }
+        
+        function updateChart() {
+            const stats = currentAnalysis.statistics;
+            
+            if (conformityChart) {
+                conformityChart.destroy();
+            }
+            
+            const ctx = chartCanvas.getContext('2d');
+            conformityChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Conformes', 'Não Conformes'],
+                    datasets: [{
+                        data: [stats.presentEPIs, stats.missingEPIs],
+                        backgroundColor: ['#27ae60', '#e74c3c'],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} itens (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Atualizar legenda
+            const chartLegend = document.getElementById('chartLegend');
+            chartLegend.innerHTML = `
+                <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 20px; height: 20px; background-color: #27ae60; margin-right: 8px;"></div>
+                        <span>Conformes: ${stats.presentEPIs} itens</span>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <div style="width: 20px; height: 20px; background-color: #e74c3c; margin-right: 8px;"></div>
+                        <span>Não Conformes: ${stats.missingEPIs} itens</span>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function updateAIReport() {
+            const aiReportContent = document.getElementById('aiReportContent');
+            let html = `
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <h4>RELATÓRIO DE ANÁLISE POR INTELIGÊNCIA ARTIFICIAL</h4>
+                    <p><strong>Data da análise:</strong> ${currentAnalysis.date}</p>
+                    <p><strong>Método:</strong> Rede neural convolucional para detecção de EPIs</p>
+                    <p><strong>Confiança média:</strong> ${calculateAverageConfidence()}%</p>
+                    
+                    <h5 style="margin-top: 20px;">DETALHES TÉCNICOS:</h5>
+                    <ul style="color: #666;">
+                        <li>Análise baseada em visão computacional</li>
+                        <li>Detecção de objetos em tempo real</li>
+                        <li>Classificação de equipamentos de segurança</li>
+                        <li>Anotação automática na imagem</li>
+                    </ul>
+                    
+                    <h5 style="margin-top: 20px;">ITENS DETECTADOS:</h5>
+                    <div style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
+            `;
+            
+            currentAnalysis.detections.forEach((detection, index) => {
+                html += `
+                    <div style="padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                        <div>
+                            <strong>${index + 1}. ${detection.item}</strong>
+                            <div style="font-size: 0.9rem; color: #666;">${detection.recommendation}</div>
+                        </div>
+                        <div style="color: #666;">${detection.confidence}</div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                </div>
+            `;
+            
+            aiReportContent.innerHTML = html;
+        }
+        
+        function calculateAverageConfidence() {
+            if (detections.length === 0) return 0;
+            const total = detections.reduce((sum, d) => {
+                return sum + parseFloat(d.confidence);
+            }, 0);
+            return (total / detections.length).toFixed(1);
+        }
+        
+        function updateRecommendations() {
+            const aiRecommendations = document.getElementById('aiRecommendations');
+            let html = '<ul style="margin-top: 10px;">';
+            
+            // Recomendações gerais baseadas no nível de risco
+            if (currentAnalysis.statistics.riskLevel === 'ALTO') {
+                html += '<li style="margin-bottom: 8px;"><strong class="status-nao-conforme">PARALISAR ATIVIDADE</strong> até regularização dos EPIs</li>';
+            }
+            
+            // Recomendações específicas
+            currentAnalysis.recommendations.forEach(rec => {
+                html += `<li style="margin-bottom: 8px;">${rec}</li>`;
+            });
+            
+            // Recomendações adicionais
+            html += `
+                <li style="margin-bottom: 8px;">Registrar não conformidades no GRO (NR-01)</li>
+                <li style="margin-bottom: 8px;">Realizar treinamento de uso correto de EPIs</li>
+                <li style="margin-bottom: 8px;">Implementar inspeções periódicas</li>
+            `;
+            
+            html += '</ul>';
+            aiRecommendations.innerHTML = html;
+        }
+        
+        function saveToHistory() {
+            // Adicionar à lista de histórico
+            analysisHistory.unshift({
+                id: currentAnalysis.id,
+                date: currentAnalysis.date,
+                conformityPercent: currentAnalysis.statistics.conformityPercent,
+                missingEPIs: currentAnalysis.statistics.missingEPIs,
+                riskLevel: currentAnalysis.statistics.riskLevel,
+                detectionsCount: currentAnalysis.detections.length
+            });
+            
+            // Manter apenas os últimos 10 registros
+            if (analysisHistory.length > 10) {
+                analysisHistory = analysisHistory.slice(0, 10);
+            }
+            
+            // Salvar no localStorage
+            localStorage.setItem('sst_analysis_history', JSON.stringify(analysisHistory));
+            
+            // Atualizar exibição do histórico
+            updateHistoryDisplay();
+        }
+        
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('historyList');
+            
+            if (analysisHistory.length === 0) {
+                historyList.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 20px;">Nenhuma análise no histórico</p>';
+                return;
+            }
+            
+            let html = '';
+            analysisHistory.forEach(item => {
+                const percentClass = item.conformityPercent >= 75 ? 'percent-high' : 
+                                   item.conformityPercent >= 50 ? 'percent-medium' : 'percent-low';
+                
+                html += `
+                    <div class="history-item">
+                        <div>
+                            <div class="history-date">${item.date}</div>
+                            <div style="font-size: 0.9rem; color: #666;">
+                                ${item.detectionsCount} não conformidades
+                            </div>
+                        </div>
+                        <div class="history-percent ${percentClass}">
+                            ${item.conformityPercent}%
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyList.innerHTML = html;
+        }
+        
+        // Limpar histórico
+        document.getElementById('clearHistory').addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar todo o histórico de análises?')) {
+                analysisHistory = [];
+                localStorage.removeItem('sst_analysis_history');
+                updateHistoryDisplay();
+            }
+        });
+        
+        // Exportar PDF
+        document.getElementById('exportPdfBtn').addEventListener('click', generatePDF);
+        
+        function generatePDF() {
+            if (!currentAnalysis) {
+                alert('Por favor, realize uma análise primeiro.');
+                return;
+            }
+            
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const margin = 15;
+            let yPos = margin;
+            
+            // Cabeçalho
+            pdf.setFillColor(44, 62, 80);
+            pdf.rect(0, 0, pageWidth, 30, 'F');
+            
+            pdf.setTextColor(255, 255, 255);
+            pdf.setFontSize(18);
+            pdf.text('APAVAN-RELATÓRIO INTELIGENTE DE ANÁLISE SST', pageWidth / 2, 15, { align: 'center' });
+            
+            pdf.setFontSize(11);
+            pdf.text('Análise por Inteligência Artificial - Sistema Automatizado', pageWidth / 2, 22, { align: 'center' });
+            
+            // Informações da análise
+            yPos = 40;
+            pdf.setTextColor(0, 0, 0);
+            pdf.setFontSize(14);
+            pdf.text('INFORMAÇÕES DA ANÁLISE', margin, yPos);
+            yPos += 10;
+            
+            pdf.setFontSize(11);
+            pdf.text(`Data e Hora: ${currentAnalysis.date}`, margin, yPos);
+            yPos += 7;
+            pdf.text(`Percentual de Conformidade: ${currentAnalysis.statistics.conformityPercent}%`, margin, yPos);
+            yPos += 7;
+            pdf.text(`Nível de Risco: ${currentAnalysis.statistics.riskLevel}`, margin, yPos);
+            yPos += 7;
+            pdf.text(`Total de Não Conformidades: ${currentAnalysis.statistics.missingEPIs}`, margin, yPos);
+            yPos += 10;
+            
+            // Adicionar imagem com anotações
+            pdf.setFontSize(14);
+            pdf.text('IMAGEM ANALISADA COM DETECÇÕES DA IA', margin, yPos);
+            yPos += 7;
+            
+            // Converter canvas para imagem e adicionar ao PDF
+            const imgData = currentAnalysis.image;
+            const imgWidth = pageWidth - 2 * margin;
+            const imgHeight = (imgWidth * canvas.height) / canvas.width;
+            
+            if (yPos + imgHeight > pageHeight - 20) {
+                pdf.addPage();
+                yPos = margin;
+            }
+            
+            pdf.addImage(imgData, 'JPEG', margin, yPos, imgWidth, imgHeight);
+            yPos += imgHeight + 10;
+            
+            // Detalhes das detecções
+            if (yPos > pageHeight - 50) {
+                pdf.addPage();
+                yPos = margin;
+            }
+            
+            pdf.setFontSize(14);
+            pdf.text('DETALHES DAS NÃO CONFORMIDADES IDENTIFICADAS', margin, yPos);
+            yPos += 10;
+            
+            pdf.setFontSize(11);
+            currentAnalysis.detections.forEach((detection, index) => {
+                if (yPos > pageHeight - 20) {
+                    pdf.addPage();
+                    yPos = margin;
+                }
+                
+                pdf.text(`${index + 1}. ${detection.item}`, margin, yPos);
+                yPos += 6;
+                pdf.text(`   Confiança: ${detection.confidence}`, margin + 5, yPos);
+                yPos += 6;
+                pdf.text(`   Recomendação: ${detection.recommendation}`, margin + 5, yPos);
+                yPos += 10;
+            });
+            
+            // Recomendações
+            if (yPos > pageHeight - 50) {
+                pdf.addPage();
+                yPos = margin;
+            }
+            
+            pdf.setFontSize(14);
+            pdf.text('RECOMENDAÇÕES TÉCNICAS', margin, yPos);
+            yPos += 10;
+            
+            pdf.setFontSize(11);
+            pdf.text('AÇÕES PRIORITÁRIAS:', margin, yPos);
+            yPos += 7;
+            
+            currentAnalysis.recommendations.forEach((rec, index) => {
+                if (yPos > pageHeight - 20) {
+                    pdf.addPage();
+                    yPos = margin;
+                }
+                pdf.text(`${index + 1}. ${rec}`, margin + 5, yPos);
+                yPos += 7;
+            });
+            
+            yPos += 5;
+            pdf.text('AÇÕES COMPLEMENTARES:', margin, yPos);
+            yPos += 7;
+            pdf.text('1. Registrar no GRO (NR-01)', margin + 5, yPos);
+            yPos += 7;
+            pdf.text('2. Atualizar PGR com os riscos identificados', margin + 5, yPos);
+            yPos += 7;
+            pdf.text('3. Realizar treinamento específico', margin + 5, yPos);
+            
+            // Rodapé
+            pdf.setFontSize(9);
+            pdf.setTextColor(100, 100, 100);
+            pdf.text('Documento gerado automaticamente pelo Sistema Inteligente de Análise SST', pageWidth / 2, pageHeight - 10, { align: 'center' });
+            pdf.text('Análise realizada por Inteligência Artificial com visão computacional', pageWidth / 2, pageHeight - 5, { align: 'center' });
+            
+            // Salvar PDF
+            const fileName = `Relatorio_IA_SST_${new Date().getTime()}.pdf`;
+            pdf.save(fileName);
+            
+            alert(`PDF gerado com sucesso! Arquivo: ${fileName}`);
+        }
+        
+        // Exportar histórico
+        document.getElementById('exportHistoryBtn').addEventListener('click', exportHistory);
+        
+        function exportHistory() {
+            if (analysisHistory.length === 0) {
+                alert('Não há histórico para exportar.');
+                return;
+            }
+            
+            // Criar CSV do histórico
+            let csv = 'Data,Hora,Conformidade%,Nao Conformidades,Nivel Risco\n';
+            
+            analysisHistory.forEach(item => {
+                const [date, time] = item.date.split(' ');
+                csv += `${date},${time},${item.conformityPercent}%,${item.missingEPIs},${item.riskLevel}\n`;
+            });
+            
+            // Criar blob e fazer download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `historico_analises_sst_${new Date().getTime()}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+            
+            alert('Histórico exportado com sucesso!');
+        }
+        
+        // Imprimir relatório
+        document.getElementById('exportPrintBtn').addEventListener('click', printReport);
+        
+        function printReport() {
+            if (!currentAnalysis) {
+                alert('Por favor, realize uma análise primeiro.');
+                return;
+            }
+            
+            const printWindow = window.open('', '_blank');
+            const printContent = generatePrintContent();
+            printWindow.document.write(printContent);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+        }
+        
+        function generatePrintContent() {
+            return `
+                <!DOCTYPE html>
+                <html lang="pt-BR">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Relatório de Análise SST - IA</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            color: #333;
+                        }
+                        .header {
+                            background-color: #2c3e50;
+                            color: white;
+                            padding: 20px;
+                            text-align: center;
+                            margin-bottom: 30px;
+                        }
+                        h1 {
+                            margin: 0;
+                            font-size: 24px;
+                        }
+                        .ai-badge {
+                            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                            color: white;
+                            padding: 5px 15px;
+                            border-radius: 20px;
+                            font-size: 12px;
+                            display: inline-block;
+                            margin-top: 10px;
+                        }
+                        .section {
+                            margin-bottom: 30px;
+                            page-break-inside: avoid;
+                        }
+                        h2 {
+                            color: #2c3e50;
+                            border-bottom: 2px solid #3498db;
+                            padding-bottom: 5px;
+                            margin-bottom: 15px;
+                        }
+                        .stats-grid {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 15px;
+                            margin: 20px 0;
+                        }
+                        .stat-card {
+                            background: #f8f9fa;
+                            padding: 15px;
+                            border-radius: 8px;
+                            text-align: center;
+                            border-left: 4px solid #3498db;
+                        }
+                        .stat-value {
+                            font-size: 24px;
+                            font-weight: bold;
+                            color: #2c3e50;
+                        }
+                        .stat-label {
+                            font-size: 14px;
+                            color: #666;
+                            margin-top: 5px;
+                        }
+                        .detection-item {
+                            padding: 15px;
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            margin-bottom: 10px;
+                            border-left: 4px solid #e74c3c;
+                        }
+                        .detection-number {
+                            background-color: #e74c3c;
+                            color: white;
+                            width: 25px;
+                            height: 25px;
+                            border-radius: 50%;
+                            display: inline-flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: bold;
+                            margin-right: 10px;
+                        }
+                        .recommendations {
+                            background-color: #fff8e1;
+                            padding: 20px;
+                            border-radius: 8px;
+                            border-left: 4px solid #f1c40f;
+                        }
+                        @media print {
+                            body {
+                                margin: 0;
+                                padding: 10px;
+                            }
+                            .no-print {
+                                display: none;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>RELATÓRIO DE ANÁLISE SST</h1>
+                        <div class="ai-badge">ANÁLISE POR INTELIGÊNCIA ARTIFICIAL</div>
+                        <p>Data da análise: ${currentAnalysis.date}</p>
+                    </div>
+                    
+                    <div class="section">
+                        <h2>RESUMO DA ANÁLISE</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">${currentAnalysis.statistics.conformityPercent}%</div>
+                                <div class="stat-label">Conformidade</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${currentAnalysis.statistics.missingEPIs}</div>
+                                <div class="stat-label">Não Conformidades</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${currentAnalysis.statistics.riskLevel}</div>
+                                <div class="stat-label">Nível de Risco</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">${currentAnalysis.detections.length}</div>
+                                <div class="stat-label">Itens Detectados</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="section">
+                        <h2>NÃO CONFORMIDADES IDENTIFICADAS</h2>
+                        ${currentAnalysis.detections.map((detection, index) => `
+                            <div class="detection-item">
+                                <div>
+                                    <span class="detection-number">${index + 1}</span>
+                                    <strong>${detection.item}</strong>
+                                </div>
+                                <div style="margin-top: 10px; margin-left: 35px;">
+                                    <div><strong>Confiança:</strong> ${detection.confidence}</div>
+                                    <div><strong>Recomendação:</strong> ${detection.recommendation}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="section">
+                        <h2>RECOMENDAÇÕES TÉCNICAS</h2>
+                        <div class="recommendations">
+                            <h3>AÇÕES PRIORITÁRIAS:</h3>
+                            <ul>
+                                ${currentAnalysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                                <li>Registrar não conformidades no GRO (NR-01)</li>
+                                <li>Atualizar PGR com os riscos identificados</li>
+                                <li>Realizar treinamento de uso correto de EPIs</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="section no-print">
+                        <p style="text-align: center; color: #666; font-size: 12px;">
+                            Documento gerado pelo Sistema Inteligente de Análise SST com IA<br>
+                            Data de geração: ${new Date().toLocaleString('pt-BR')}
+                        </p>
+                    </div>
+                    
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `;
+        }
+        
+        // Função para alternar abas
+        function openTab(tabName) {
+            // Esconder todas as abas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remover classe active de todas as tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar a aba selecionada
+            document.getElementById(tabName).classList.add('active');
+            
+            // Ativar a tab correspondente
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Inicializar aplicação
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carregar histórico
+            updateHistoryDisplay();
+            
+            // Inicializar gráfico vazio
+            const ctx = chartCanvas.getContext('2d');
+            conformityChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Aguardando análise'],
+                    datasets: [{
+                        data: [100],
+                        backgroundColor: ['#95a5a6']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // Adicionar drag and drop
+            const uploadArea = document.getElementById('uploadArea');
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '#e8f4fc';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.backgroundColor = '';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '';
+                
+                if (e.dataTransfer.files.length) {
+                    const file = e.dataTransfer.files[0];
+                    if (file.type.startsWith('image/')) {
+                        // Simular upload
+                        const event = { target: { files: [file] } };
+                        handleImageUpload(event);
+                    } else {
+                        alert('Por favor, selecione apenas arquivos de imagem.');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
